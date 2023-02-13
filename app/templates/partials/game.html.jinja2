@@ -1,0 +1,37 @@
+{% set in_cart = game.guid in meta.guids %}
+
+<div class="game{% if in_cart %} in-cart{% endif %}" title="Add '{{ game.name }}' to cart" data-game-guid="{{ game.guid }}">
+    <div class="image">
+        <img src="{{ game.image.icon_url }}">
+    </div>
+    <div class="detail">
+        <div class="title">
+            <strong>{{ game.name }}</strong>
+            {% if in_cart %}
+                (already in cart)
+            {% endif %}
+        </div>
+        <div class="meta">
+            {% if game.platforms %}
+            <span>
+            {% for p in game.platforms %}
+                {{ p.abbreviation }}
+            {% endfor %}
+            </span>
+            {% endif %}
+
+            <span>
+            {% if game.original_release_date %}
+                |
+                {{ game.original_release_date }}
+            {% elif game.expected_release_year and game.expected_release_month and game.expected_release_day %}
+                |
+                {{ game.expected_release_year }}-{{ game.expected_release_month }}-{{ game.expected_release_day }} (expected)
+            {% endif %}
+        </span>
+        </div>
+        <div class="description">
+            {{ game.deck }}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+{% extends 'base.html.jinja2' %}
+
+{% block title %}
+    Search games
+    {% if meta.query %}
+        for "{{ meta.query }}"
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% include "partials/search-widget.html.jinja2" %}
+    {% include "partials/cart-widget.html.jinja2" %}
+    {% include "partials/pager.html.jinja2" %}
+
+    <div class="game-results">
+        {% for game in results.results %}
+            {% include "partials/game.html.jinja2" %}
+        {% else %}
+            <h2>No results found for "<em>{{ meta.query }}</em>"</h2>
+        {% endfor %}
+    </div>
+
+    {% include "partials/pager.html.jinja2" %}
+
+    <script>
+    const addToCart = (e) => {
+        const el = e.currentTarget;
+        if (el && el.dataset) {
+            const guid = el.dataset.gameGuid;
+            // Quick hack: Yucky way to build URL, but we don't have the time to do it properly for now.
+            const url = `{{ url_for('.cart', guid='') }}${guid}`;
+            console.log(url)
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+                {#
+                body: JSON.stringify({
+                    guid: myName,
+                    password: myPassword
+                })
+                #}
+            })
+            .then((response) => {
+                location.reload()
+            });
+        }
+    };
+
+    document.querySelectorAll('.game-results .game').forEach((item) => {
+        item.addEventListener('click', addToCart);
+    })
+    </script>
+{% endblock content %}

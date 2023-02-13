@@ -1,0 +1,11 @@
+<section class="add-cart">
+    <span>
+    <strong>
+        {{ meta.guids|length }}
+    </strong>
+    item{% if meta.guids|length != 1 %}s{% endif %} in cart
+    </span>
+    <form>
+        <button class="checkout" formaction="{{ url_for('.checkout') }}">Checkout</button>
+    </form>
+</section>

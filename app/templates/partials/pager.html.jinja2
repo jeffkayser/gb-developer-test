@@ -1,0 +1,19 @@
+{% set page_prev = meta.page_current - 1 %}
+{% set page_next = meta.page_current + 1 %}
+
+{% macro link_if(expr, url, content) -%}
+    {# Link to `url` only if `expr` evaluates to `True`. In any case, display `content`. #}
+    {% if expr %}
+        <a href="{{ url }}">
+    {% endif %}{{ content }}{% if expr %}</a>{% endif %}
+{%- endmacro %}
+
+<div class="subsection pager">
+    {{ link_if(meta.page_current > 1, url_for(".search", query=meta.query, page_num=1), '«top') }}
+    {{ link_if(meta.page_current > 1, url_for(".search", query=meta.query, page_num=page_prev), '‹prev') }}
+
+    page <strong>{{ meta.page_current }}</strong> of <strong>{{ meta.page_total }}</strong>
+
+    {{ link_if(meta.page_current < meta.page_total, url_for(".search", query=meta.query, page_num=page_next), 'next›') }}
+    {{ link_if(meta.page_current < meta.page_total, url_for(".search", query=meta.query, page_num=meta.page_total), 'end»') }}
+</div>

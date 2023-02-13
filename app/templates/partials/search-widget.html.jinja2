@@ -1,0 +1,32 @@
+<section class="subsection search">
+    {% if results %}
+    <p>
+        <strong>{{ results.number_of_total_results }}</strong>
+        game{% if results.number_of_total_results != 1 %}s{% endif %} match your search for
+        "<em>{{ meta.query }}</em>"
+    </p>
+    {% endif %}
+
+    <form class="game-search">
+        <input name="query" placeholder="Search query" size="10" onsubmit="search">
+        <button>Go</button>
+    </form>
+</section>
+
+<script>
+    // Lacking a frontend framework, this is a quick hack to emulate a UI where clicking the 'Go' button or
+    // hitting the [Enter] key performs the search while maintaining our pretty Flask URL pattern.
+
+    const url = "{{ url_for('.search', query="") }}";
+
+    const search = (e) => {
+        e.preventDefault();
+        const query = document.querySelector('input[name="query"]');
+        if (query) {
+            window.location = `${url}${query.value}`;
+        }
+        return false;
+    };
+
+    document.querySelector('form.game-search').addEventListener('submit', search);
+</script>

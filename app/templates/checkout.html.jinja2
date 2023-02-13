@@ -1,0 +1,25 @@
+{% extends 'base.html.jinja2' %}
+
+{% block title %}
+    Checkout
+{% endblock %}
+
+{% block content %}
+    {% if games %}
+    {% include "partials/checkout-widget.html.jinja2" %}
+    {% endif %}
+
+    <div class="game-results">
+        {% for game in games %}
+            {% include "partials/game.html.jinja2" %}
+        {% else %}
+            <h2>Your cart is empty. Find some games you want by searching below!</h2>
+
+            {% include "partials/search-widget.html.jinja2" %}
+        {% endfor %}
+    </div>
+
+    {% if games %}
+    {% include "partials/checkout-widget.html.jinja2" %}
+    {% endif %}
+{% endblock content %}
